@@ -1,0 +1,42 @@
+.songAdd {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    .title{
+        font-size: 20px;
+    }
+    .items {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        .item{
+            display: flex;
+            gap:20px;
+            height: 40px;
+            label {
+                min-width: 100px;
+            }
+            input{
+                min-width: 200px;
+            }
+        }
+        .editorContainer {
+            height: 300px;
+            overflow: scroll;
+            border: 1px solid lightgray;
+  
+            .editor {
+              height: 100%;
+              border: none;
+            }
+          }
+        button {
+            width: 70px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5px 10px;
+        }
+    }
+}

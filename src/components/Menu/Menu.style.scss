@@ -1,0 +1,25 @@
+@import "../../styles/variable.scss" ;
+
+.menu{
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+    .listItem {
+        padding: 10px;
+        line-height: 50px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        img{
+            object-fit: cover;
+            width: 20px;
+            height: 20px;
+        }
+        &:hover {
+            background-color: $soft-bg;
+        }
+    }
+}
