@@ -8,6 +8,7 @@ export type UserType =  {
     fullName:string,
     gender:string,
     status:boolean
+    dateOfBrith:string
     role?: Role
 }
 
@@ -22,8 +23,10 @@ export type UserRequest = {
     lastName:string,
     email:string,
     password:string,
-    gender:string
-    status:boolean
+    gender:string,
+    day:number,
+    month:number
+    year:number
     roleName:string
 }
 

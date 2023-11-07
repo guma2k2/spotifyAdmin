@@ -22,7 +22,7 @@ export const updateUser = async (formData:FormData, userId:number) => {
 export const updateStatus = async (userId:number) => {
     const url = `/song/update/status/${userId}`;
     const res = await makeRequest.put(url);
-    return res.data ;
+    return res ;
 }
 
 export const findFirstPage = async () => {

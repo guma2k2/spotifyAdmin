@@ -1,7 +1,7 @@
 import { GridColDef } from "@mui/x-data-grid";
 import { useState } from "react";
 import './Playlist.style.scss'
-import AddCustom from "../../components/AddCustom/AddCustom";
+import AddCustom from "../../components/AddCustom/AddCustomPlaylist";
 import { ActionType } from "../../enums/ActionType";
 import DatatablePlaylist from "../../components/Datatable/DatatablePlaylist";
 import { useQuery } from "@tanstack/react-query";

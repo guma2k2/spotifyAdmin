@@ -5,6 +5,8 @@ import { UserType } from '../../types/UserType';
 import { findUserById } from '../../services/UserService';
 import Pagination from '@mui/material/Pagination';
 import { useState } from 'react';
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 
 type Probs = {
     columns : GridColDef[] ,
@@ -25,6 +27,19 @@ type Probs = {
 const Datatable = (props : Probs) => {
     const [page, setPage] = useState<number>(1);
     const handleDelete = (id:number) => {
+      confirmAlert({
+        title: 'Xac nhan',
+        message: `Bạn có chắc muốn xóa user#${id} ?`,
+        buttons: [
+          {
+            label: 'Yes',
+            onClick: () => alert('Click Yes')
+          },
+          {
+            label: 'No'
+          }
+        ]
+      });
       props.setIdentify(id);
       
     }

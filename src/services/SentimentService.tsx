@@ -23,3 +23,15 @@ export const updateSentiment = async (sentiment:SentimentType) => {
     const res = await makeRequest.put(url,sentiment);
     return res.data ;
 }
+
+export const findById  = async(id:number)=> {
+    const url = `http://127.0.0.1:8000/sentiment/train/admin/${id}` ;
+    const res = await makeRequest.get<SentimentType>(url);
+    return res ;
+}
+
+export const deleteById  = async(id:number)=> {
+    const url = `http://127.0.0.1:8000/sentiment/train/admin/${id}`;
+    const res = await makeRequest.delete<string>(url);
+    return res.data ;
+}

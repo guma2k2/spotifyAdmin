@@ -14,21 +14,13 @@ type Props = {
 
 const AddCustom = (props:Props) => {
     const queryClient = useQueryClient();
-    const [image, setImage] = useState<File>();
-    const [thumbnail, setThmubnail] = useState<File>();
     const [description, setDescription] = useState<string>("") ;
     const [name, setName] = useState<string>("") ;
     const mutation =  useMutation({
         mutationFn: async  () => {
             console.log("asdfasfas");
             var formData = new FormData() ;
-            if(image) {
-                formData.append("image", image);
-            }
 
-            if(thumbnail) {
-                formData.append("thumbnail", thumbnail);
-            }
             formData.append("name", name);
             formData.append("description" , description);
             if(props.identify) {
@@ -49,19 +41,6 @@ const AddCustom = (props:Props) => {
         props.setOpen(false);
     }
 
-    const handleChangeImage = (e:React.ChangeEvent<HTMLInputElement>) => {
-        const files = e.target.files;
-        if(files && files.length > 0) {
-          setImage(files[0]) ;
-        }
-    }
-
-    const handleChangeThumbnail = (e:React.ChangeEvent<HTMLInputElement>) => {
-        const files = e.target.files;
-        if(files && files.length > 0) {
-           setThmubnail(files[0]) ;
-        }
-    }
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         mutation.mutate();
@@ -80,14 +59,6 @@ const AddCustom = (props:Props) => {
                     <span className='close' onClick={handleClose} >X</span>
                 </div>
                 <form onSubmit={handleSubmit}>
-                    <div className='item'>
-                        <label>Image</label>
-                        <input  type= "file" onChange={handleChangeImage}   />
-                    </div>
-                    <div className='item'>
-                        <label>Thumbnail</label>
-                        <input  type= "file" onChange={handleChangeThumbnail} />
-                    </div>
                     <div className='item'>
                         <label>Name</label>
                         <input type= "text" value={name} onChange={(e) => setName(e.target.value)} required />

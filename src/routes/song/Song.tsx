@@ -1,6 +1,5 @@
 import { GridColDef } from "@mui/x-data-grid";
-import { useQuery } from "@tanstack/react-query";
-import { Link } from "react-router-dom";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { findAllSong,updateStatus } from "../../services/SongService";
 import DatatableSong from "../../components/Datatable/DatatableSong";
 import './Song.style.scss'
@@ -8,6 +7,7 @@ import { useState } from "react";
 import ModelUploadImage from "../../components/ModelUploadImage/ModelUploadImage";
 
 const Song = () => {
+  const queryClient = useQueryClient();
   const [src, setSrc] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [sortDir, setSortDir] = useState<string>("desc");
@@ -62,9 +62,11 @@ const Song = () => {
       Loading..,
     </div>
   }
-  const updateStatusSong = (id:number) => {
-    const res = updateStatus(id);
-    console.log(res);
+  const updateStatusSong = async (id:number) => {
+    const res = await  updateStatus(id);
+    if(res.status === 200) {
+      queryClient.invalidateQueries(['song']);
+    }
   }
   const onPreviewImage = (id: number, type:string, imagePath:string) => {
     setType(type);
@@ -76,9 +78,6 @@ const Song = () => {
     <div className="song">
       <div className="info">
         <h1>Songs</h1>
-        <Link to="/song/add" className="actionAdd" >
-          <button >Add song</button>
-        </Link>
       </div>
       <DatatableSong slug="Song" columns={columnsTable} rows={songsData ? songsData : []} />
       {openUploadImage && <ModelUploadImage

@@ -4,7 +4,8 @@ import { ActionType } from '../../enums/ActionType';
 import { PlaylistType } from '../../types/PlaylistType';
 import { findPlaylistById } from '../../services/PlaylistService';
 import { Link } from 'react-router-dom';
-
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 
 type Probs = {
     columns : GridColDef[] ,
@@ -20,6 +21,20 @@ const DatatablePlaylist = (props : Probs) => {
 
     const handleDelete = (id:number) => {
       console.log(id);
+      confirmAlert({
+        title: 'Xac nhan',
+        message: `Bạn có chắc muốn xóa playlist#${id} ?`,
+        buttons: [
+          {
+            label: 'Yes',
+            onClick: () => alert('Click Yes')
+          },
+          {
+            label: 'No'
+          }
+        ]
+      });
+      props.setIdentify(id);
     }
 
     const handleUpdate = async (id:number) => {

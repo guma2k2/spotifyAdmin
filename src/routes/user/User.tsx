@@ -1,16 +1,15 @@
-import { useState } from "react"
+import {  useState } from "react"
 import AddModel from "../../components/AddModel/AddModel";
 import { GridColDef } from "@mui/x-data-grid";
 import Datatable from "../../components/Datatable/Datatable";
 import './User.style.scss'
 import { ActionType } from "../../enums/ActionType";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { listAllPage,updateStatus } from "../../services/UserService";
 import { UserType } from "../../types/UserType";
 import ModelUploadImage from "../../components/ModelUploadImage/ModelUploadImage";
 const User = () => {
-
-
+  const queryClient = useQueryClient();
   // Todo : fetch data user 
   const columnsTable: GridColDef[] = [
     { field: "id", headerName: "ID", width: 90 },
@@ -83,9 +82,11 @@ const User = () => {
     setSrc(photoImagePath);
     setOpenUploadImage(true);
   }
-  const updateStatusUser = (id:number) => {
-    const res = updateStatus(id);
+  const updateStatusUser = async (id:number) => {
+    const res = await  updateStatus(id);
     console.log(res);
+    alert(res.data);
+    queryClient.invalidateQueries(['user',1,"desc","id",""]);
   }
 
 

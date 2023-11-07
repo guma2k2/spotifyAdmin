@@ -14,21 +14,11 @@ type Props = {
 
 const AddCustomCategory = (props:Props) => {
     const queryClient = useQueryClient();
-    const [image, setImage] = useState<File>();
-    const [thumbnail, setThmubnail] = useState<File>();
     const [title, setTitle] = useState<string>("") ;
     const [categoryParentTitle, setCategoryParentTitle] = useState<string>("");
     const mutation =  useMutation({
         mutationFn: async  () => {
-            console.log("asdfasfas");
             var formData = new FormData() ;
-            if(image) {
-                formData.append("image", image);
-            }
-
-            if(thumbnail) {
-                formData.append("thumbnail", thumbnail);
-            }
             formData.append("title", title);
             if(categoryParentTitle){
                 formData.append("categoryParentTitle" , categoryParentTitle);
@@ -50,20 +40,7 @@ const AddCustomCategory = (props:Props) => {
     const handleClose = () => {
         props.setOpen(false);
     }
-
-    const handleChangeImage = (e:React.ChangeEvent<HTMLInputElement>) => {
-        const files = e.target.files;
-        if(files && files.length > 0) {
-          setImage(files[0]) ;
-        }
-    }
-
-    const handleChangeThumbnail = (e:React.ChangeEvent<HTMLInputElement>) => {
-        const files = e.target.files;
-        if(files && files.length > 0) {
-           setThmubnail(files[0]) ;
-        }
-    }
+   
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         mutation.mutate();
@@ -99,14 +76,6 @@ const AddCustomCategory = (props:Props) => {
                     <span className='close' onClick={handleClose} >X</span>
                 </div>
                 <form onSubmit={handleSubmit}>
-                    <div className='item'>
-                        <label>Image</label>
-                        <input  type= "file" onChange={handleChangeImage}   />
-                    </div>
-                    <div className='item'>
-                        <label>Thumbnail</label>
-                        <input  type= "file" onChange={handleChangeThumbnail} />
-                    </div>
                     <div className='item'>
                         <label>Name</label>
                         <input type= "text" value={title} onChange={(e) => setTitle(e.target.value)} required />

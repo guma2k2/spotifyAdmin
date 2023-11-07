@@ -2,10 +2,9 @@ import { GridColDef } from '@mui/x-data-grid';
 import './AddModel.scss'
 import { ActionType } from '../../enums/ActionType';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { addUser, findAllRole, updateUser, uploadImage } from '../../services/UserService';
+import { addUser, findAllRole, updateUser,  } from '../../services/UserService';
 import { useEffect, useState } from 'react';
 import { UserRequest, UserType } from '../../types/UserType';
-
 type Prob = {
     slug: string,
     setOpen : React.Dispatch<React.SetStateAction<boolean>>,
@@ -20,66 +19,50 @@ const AddModel = (props: Prob) => {
     const [lastName, setLastName] = useState<string>("") ;
     const [email, setEmail] = useState<string>("") ;
     const [password, setPassword] = useState<string>("") ;
-    const [photoImage, setPhotoImage] = useState<string>("");
-    const [photo, setPhoto] = useState<File>();
     const [roleName, setRoleName] = useState<string>() ;
     const [gender,setGender] = useState<string>("MALE");
+    const [day,setDay] = useState<number>(1);
+    const [month,setMonth] = useState<number>(1);
+    const [year,setYear] = useState<number>(2023);
     const mutation =  useMutation({
         mutationFn: async  () => {
-
             const request:UserRequest = {
                 firstName,
                 lastName,
                 email,
                 password,
                 gender,
+                day,
+                month,
+                year,
                 roleName:roleName?roleName :""
             }
-            var formData = new FormData() ;
-            
-            let status = 404  ;
-            let userIdResponse = 0 ;
+
             if(props.id) {
                 let userId = props.id;
-                const res =  await updateUser(request,userId);
-                if(res && res.status === 200) {
-                    userIdResponse = res.data.id;
-                }
-                status = res.status;
-            } else {
-                const res =  await addUser(request);
-                status = res.status;
-                if(res && res.status === 200) {
-                    userIdResponse = res.data.id;
-                }
-            }
-            if(photo) {
-                formData.append("image", photo);
-                return uploadImage(formData,userIdResponse);
-            }
+                return  await updateUser(request,userId);
+            } 
+            return  await addUser(request);
         },
         onSuccess: () => {
-            queryClient.invalidateQueries(['user']);
+            queryClient.invalidateQueries(['user',1,"desc","id",""]);
             props.setOpen(false);
         }
     })
     
-
-    
-    const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
-        const files = e.target.files;
-        if(files && files.length > 0) {
-          setPhoto(files[0]) ;
-        }
-    }
+   
     useEffect(() => {
     if (props.user) {
+        const dateParts = props.user.dateOfBrith.split('/');
         setFirstName(props.user.firstName);
         setLastName(props.user.lastName);
         setEmail(props.user.email);
-        setPhotoImage(props.user.photoImagePath);
         setRoleName(props.user.role?.name)
         setGender(props.user.gender);
+        setDay(parseInt(dateParts[0], 10));
+        setMonth(parseInt(dateParts[1], 10));
+        setYear(parseInt(dateParts[2], 10));
+        
     }
     }, [props.user]); 
 
@@ -109,7 +92,6 @@ const AddModel = (props: Prob) => {
         console.log(e.target.value);
         setRoleName(e.target.value);
     }
-
     return (
         <div className='add'>
             <div className="modal">
@@ -133,17 +115,18 @@ const AddModel = (props: Prob) => {
                             <input  type= "password" min={8} value={password} onChange={(e) => setPassword(e.target.value)}  />
                         </div>
                         <div className='item' >
-                            <label>Photo</label>
-                            <input  type= "file" onChange={handleChange} />
-                        </div>
-                        <div className='item' >
                             <label>Gender</label>
                             <select value={gender} onChange={(e) => setGender(e.target.value)} >
                                 <option value="MALE">MALE</option>
                                 <option value="FEMALE">FEMALE</option>
                             </select>
                         </div>
-                        {photoImage && <img className='photo' src={photoImage} />}
+                        <div className='item-date' >
+                            <label>Date of birth</label>
+                            <input value={day} type='number' placeholder='day' min={1} max={31} onChange={(e) => setDay(parseInt(e.target.value))} />
+                            <input value={month} type="number" placeholder='month' min={1} max={12} onChange={(e) => setMonth(parseInt(e.target.value))} />
+                            <input value={year} type="number" placeholder='year' onChange={(e) => setYear(parseInt(e.target.value))}  />
+                        </div>
                         <div className='roleSelection' >
                             <label>Role</label>
                             <select value={roleName} onChange={handleChangeSelection} >

@@ -15,6 +15,9 @@ import SongAdd from './routes/song/SongAdd'
 import Album from './routes/album/Album'
 import Review from './routes/review/Review'
 import Sentiment from './routes/sentiment/Sentiment'
+import Login from './routes/login/Login'
+import { AuthProvider } from './contexts/AuthContext'
+import ProtectedRoute from './components/protectedRoute/ProtectedRoute'
 
 function App() {
   const queryClient = new QueryClient();
@@ -22,76 +25,84 @@ function App() {
   const Layout = () => {
     return (
       <QueryClientProvider client={queryClient} >
-      <div className="main">
-        <Navbar/>
-        <div className='container'>
-          <div className="menuContainer">
-            <Menu/>
+        <ProtectedRoute>
+          <div className="main">
+            <Navbar />
+            <div className='container'>
+              <div className="menuContainer">
+                <Menu />
+              </div>
+              <div className="contentContainer">
+                <Outlet />
+              </div>
+            </div>
+            <Footer />
           </div>
-          <div className="contentContainer">
-            <Outlet/>
-          </div>
-        </div>
-        <Footer/>
-      </div>
+        </ProtectedRoute>
       </QueryClientProvider>
     )
   }
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Layout/>,
+      element: <Layout />,
       children: [
         {
           path: "/",
-          element: <Home/>
+          element: <Home />
         },
         {
           path: "/user",
-          element: <User/>
+          element: <User />
         },
         {
           path: "/album",
-          element: <Album/>
+          element: <Album />
         },
         {
           path: "/song",
-          element: <Song/>
+          element: <Song />
         },
         {
           path: "/song/add",
-          element: <SongAdd/>
+          element: <SongAdd />
         },
         {
           path: "/playlist",
-          element: <Playlist/>
+          element: <Playlist />
         },
         {
           path: "/review",
-          element: <Review/>
+          element: <Review />
         },
         {
           path: "/category",
-          element: <Category/>
+          element: <Category />
         },
         {
           path: "/sentiment",
-          element: <Sentiment/>
+          element: <Sentiment />
         },
         {
-          path:"/shared/:id/:tag",
-          element:<SharedPlaylist/>
+          path: "/shared/:id/:tag",
+          element: <SharedPlaylist />
         },
         {
-          path:"/sharedCategory/:id/:tag",
-          element:<SharedCategory/>
+          path: "/sharedCategory/:id/:tag",
+          element: <SharedCategory />
         }
       ]
-    }
+    },
+    {
+      path: "/login",
+      element: <Login />
+    },
   ])
 
 
-  return <RouterProvider router={router} />
+  return <AuthProvider>
+    <RouterProvider router={router} />
+  </AuthProvider>
 }
 
 export default App

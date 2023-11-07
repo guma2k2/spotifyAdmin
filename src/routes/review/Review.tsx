@@ -1,11 +1,12 @@
 import { GridColDef } from "@mui/x-data-grid";
 import './Review.style.scss'
 import DatatableReview from "../../components/Datatable/DatatableReview";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { findAllReview, updateStatus } from "../../services/ReviewService";
 
 
 const Review = () => {
+  const queryClient = useQueryClient();
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", width: 100 },
     {
@@ -43,9 +44,10 @@ const Review = () => {
     },
 
   ];
-  const updateStatusReview = (id:number) => {
-    const res = updateStatus(id);
-    console.log(res);
+  const updateStatusReview = async (id:number) => {
+    const res = await  updateStatus(id);
+    alert(res);
+    queryClient.invalidateQueries(['review']);
   }
   const { isLoading, data, error } = useQuery({
     queryKey: ['review'],

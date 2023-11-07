@@ -2,7 +2,7 @@ import { GridColDef } from "@mui/x-data-grid";
 import { useState } from "react";
 import { ActionType } from "../../enums/ActionType";
 import { AlbumCustomType } from "../../types/AlbumType";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { findAllAlbum,updateStatus } from "../../services/AlbumService";
 import DatatableAlbum from "../../components/Datatable/DatatableAlbum";
 import AddAlbum from "../../components/AddCustom/AddAlbum";
@@ -10,6 +10,7 @@ import AddAlbum from "../../components/AddCustom/AddAlbum";
 import './Album.style.scss'
 import ModelUploadImage from "../../components/ModelUploadImage/ModelUploadImage";
 const Album = () => {
+  const queryClient = useQueryClient();
   const columns: GridColDef[] = [
     { field: "id", headerName: "Id", width: 100 },
     {
@@ -71,8 +72,9 @@ const Album = () => {
     return <div>Loading...</div>
   }
 
-  const updateStatusAlbum = (id:number) => {
-    const res = updateStatus(id);
+  const updateStatusAlbum = async (id:number) => {
+    const res = await updateStatus(id);
+    queryClient.invalidateQueries(['album'])
     console.log(res);
   }
 

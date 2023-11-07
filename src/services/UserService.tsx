@@ -25,7 +25,7 @@ export const listAllPage = async (numPage:number,sortDir:string, sortField:strin
 export const updateStatus = async (userId:number) => {
     const url = `/user/admin/update/status/${userId}`;
     const res = await makeRequest.put(url);
-    return res.data ;
+    return res ;
 }
 
 export const findUserById  = async(userId:number)=> {
@@ -42,12 +42,12 @@ export const findAllRole = async () => {
 
 
 export const addUser = async (request:UserRequest) => {
-    const res = await makeRequest.post('/user', request);
+    const res = await makeRequest.post('/user/admin/save', request);
     return res.data ;
 }
 
 export const updateUser = async (request:UserRequest, userId:number) => {
-    const url = `/user/${userId}`;
+    const url = `/user/admin/update/${userId}`;
     const res = await makeRequest.put(url, request);
     return res.data ;
 }

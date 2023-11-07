@@ -5,13 +5,14 @@ import { ActionType } from "../../enums/ActionType";
 import { CategoryType } from "../../types/CategoryType";
 import DatatableCategory from "../../components/Datatable/DatatableCategory";
 import AddCustomCategory from "../../components/AddCustom/AddCustomCategory";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { findAllCategory,updateStatus} from "../../services/CategoryService";
 import ModelUploadImage from "../../components/ModelUploadImage/ModelUploadImage";
 
 
 
 const Category = () => {
+  const queryClient = useQueryClient();
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", width: 100 },
     {
@@ -76,8 +77,10 @@ const Category = () => {
     return <div>Error...</div>
   }
 
-  const updateStatusCate = (id:number) => {
-    const res = updateStatus(id);
+  const updateStatusCate = async (id:number) => {
+    const res = await updateStatus(id);
+    alert(res)
+    queryClient.invalidateQueries(['category']);
     console.log(res);
   }
 

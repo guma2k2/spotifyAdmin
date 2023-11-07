@@ -11,11 +11,11 @@
     align-items: center;
     justify-content: center;
     .modal{
-        padding: 50px;
+        padding: 20px;
         border-radius: 10px;
         background-color: $soft-bg ;
         position: relative;
-        
+        width: 700px;
         h1 {
             margin-bottom: 40px;
             font-size: 24px;
@@ -49,6 +49,31 @@
                     border-radius: 5px;
                 }
                 
+            }
+            .item-date {
+                display: flex;
+                label {
+                    width: 40%;
+                }
+                input {
+                    color: white;
+                    padding: 10px;
+                    outline: none;
+                    background-color: transparent;
+                    border: 1px solid $soft-color;
+                    border-radius: 5px;
+                    caret-color:rgba(236, 230, 230, 0.724);
+                    &:first-child {
+                        width: 15%;
+                    }
+                    &:nth-child(1) {
+                        width: 15%;
+                    }
+                    &:last-child {
+                        width: 30%;
+                    }
+                    
+                }
             }
             .roleSelection{
                 display: flex;

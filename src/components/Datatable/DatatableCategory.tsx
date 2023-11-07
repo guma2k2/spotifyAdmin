@@ -4,7 +4,8 @@ import { ActionType } from '../../enums/ActionType';
 import { CategoryType } from '../../types/CategoryType';
 import { findCategoryByID } from '../../services/CategoryService';
 import { Link } from 'react-router-dom';
-
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 
 type Probs = {
     columns : GridColDef[] ,
@@ -20,6 +21,19 @@ const DatatableCategory = (props : Probs) => {
 
     const handleDelete = (id:number) => {
       console.log(id);
+      confirmAlert({
+        title: 'Xac nhan',
+        message: `Bạn có chắc muốn xóa category#${id} ?`,
+        buttons: [
+          {
+            label: 'Yes',
+            onClick: () => alert('Click Yes')
+          },
+          {
+            label: 'No'
+          }
+        ]
+      });
     }
     const handleUpdate = async (id:number) => {
       console.log(id);
