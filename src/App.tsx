@@ -25,7 +25,7 @@ function App() {
   const Layout = () => {
     return (
       <QueryClientProvider client={queryClient} >
-        <ProtectedRoute>
+        {/* <ProtectedRoute> */}
           <div className="main">
             <Navbar />
             <div className='container'>
@@ -38,7 +38,7 @@ function App() {
             </div>
             <Footer />
           </div>
-        </ProtectedRoute>
+        {/* </ProtectedRoute> */}
       </QueryClientProvider>
     )
   }
