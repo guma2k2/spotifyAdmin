@@ -6,33 +6,36 @@ import { AuthContext } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 const Login = () => {
-    const {state, dispatch} = useContext(AuthContext);
+    const { state, dispatch } = useContext(AuthContext);
     const navigate = useNavigate();
     console.log(state);
     const [inputs, setInputs] = useState<LoginRequest>({
-        email:"",
-        password:""
+        email: "",
+        password: ""
     });
     const [err, setErr] = useState<string>();
-    const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     };
-    const handleSubmit = async (e:React.MouseEvent<HTMLButtonElement>) =>  {
+    const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         const res = await login(inputs).catch(err => {
             console.log(err);
             console.log(err.response.data.message);
             setErr(err.response.data.message);
         });
-        if(res && res.status === 200) {
+        console.log(res);
+        if (res && res.status === 200) {
             const user = res.data.user;
             const cookies = new Cookies();
-            if(user.role.name === "ROLE_ADMIN") {
-                navigate('/')
+
+
+            if (user.role.name === "ROLE_ADMIN") {
                 cookies.set('refresh_token', res.data.refresh_token, { path: '/' });
-                localStorage.setItem("access_token",res.data.access_token)
-                dispatch({type:"LOGIN",payload:res.data.user});
-            }else {
+                localStorage.setItem("access_token", res.data.access_token)
+                dispatch({ type: "LOGIN", payload: res.data.user });
+                navigate('/')
+            } else {
                 setErr("You don't have permission")
             }
         }

@@ -16,7 +16,8 @@ const SongAdd = () => {
     const [userId, setUserid] = useState<number>(0);
     const mutation =  useMutation({
         mutationFn: async  () => {
-            console.log("asdfasfas");
+            console.log(lyric);
+            alert(lyric)
             var formData = new FormData() ;
             if(image) {
                 formData.append("image", image);
@@ -29,7 +30,9 @@ const SongAdd = () => {
             formData.append("lyric", lyric);
             formData.append("userId", userId.toString());
             formData.append("duration", duration.toString());
-            return await addSong(formData);
+            console.log(formData);
+            
+            // return await addSong(formData);
         },
         onSuccess: () => {
             queryClient.invalidateQueries(['song']);
